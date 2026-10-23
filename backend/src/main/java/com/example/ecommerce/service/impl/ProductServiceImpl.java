@@ -6,7 +6,7 @@ import com.example.ecommerce.entity.Category;
 import com.example.ecommerce.entity.Product;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.CategoryRepository;
-import com.example.ecommerce.rag.RagIndexService;
+import com.example.ecommerce.rag.KnowledgeIndexService;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final RagIndexService ragIndexService;
+    private final KnowledgeIndexService knowledgeIndexService;
 
     @Override
     public List<ProductDto> getAllProducts() {
@@ -69,9 +69,9 @@ public class ProductServiceImpl implements ProductService {
                 .imageUrl(request.getImageUrl())
                 .category(resolveCategory(request.getCategoryId()))
                 .build();
-        ProductDto saved = toDto(productRepository.save(product));
-        ragIndexService.markDirty();   // AI assistant re-indexes on its next question
-        return saved;
+        Product saved = productRepository.save(product);
+        knowledgeIndexService.indexProduct(saved);   // AI assistant: add this one product to the vector store
+        return toDto(saved);
     }
 
     @Override
@@ -86,9 +86,9 @@ public class ProductServiceImpl implements ProductService {
         product.setImageUrl(request.getImageUrl());
         product.setCategory(resolveCategory(request.getCategoryId()));
 
-        ProductDto saved = toDto(productRepository.save(product));
-        ragIndexService.markDirty();   // AI assistant re-indexes on its next question
-        return saved;
+        Product saved = productRepository.save(product);
+        knowledgeIndexService.indexProduct(saved);   // AI assistant: replace this one product in the vector store
+        return toDto(saved);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ResourceNotFoundException("Product not found: " + id);
         }
         productRepository.deleteById(id);
-        ragIndexService.markDirty();
+        knowledgeIndexService.removeProduct(id);
     }
 
     private Category resolveCategory(Long categoryId) {

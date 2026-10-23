@@ -14,13 +14,14 @@ public class ChatRequest {
     @Size(max = 500, message = "Questions can be at most 500 characters")
     private String message;
 
+    /** Earlier turns of the conversation (oldest first). The server re-validates and trims these. */
     @Valid
     @Size(max = 20, message = "Conversation history is too long")
     private List<Turn> history;
 
     @Data
     public static class Turn {
-        private String role;      
+        private String role;      // "user" or "assistant"
 
         @Size(max = 2000, message = "A history message is too long")
         private String content;

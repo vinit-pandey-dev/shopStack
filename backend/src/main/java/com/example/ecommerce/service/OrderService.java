@@ -10,7 +10,6 @@ public interface OrderService {
     OrderDto placeOrder(String username, PlaceOrderRequest request);
     List<OrderDto> getOrdersForUser(String username);
     OrderDto getOrderById(String username, Long orderId);
-    OrderDto cancelOwnOrder(String username, Long orderId);
 
     // admin
     List<OrderDto> getAllOrders();

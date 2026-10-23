@@ -12,12 +12,12 @@ public class ChatResponse {
     private String answer;
     private List<Source> sources;
 
-    
+    /** What the answer was grounded in: a product (link target) or a policy section. */
     @Data
     @AllArgsConstructor
     public static class Source {
-        private String type;       
-        private Long productId;    
+        private String type;       // PRODUCT | POLICY
+        private Long productId;    // null for policies
         private String title;
     }
 }

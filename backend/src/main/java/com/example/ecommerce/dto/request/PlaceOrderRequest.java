@@ -15,7 +15,9 @@ public class PlaceOrderRequest {
     @NotNull(message = "Payment method is required")
     private PaymentMethod paymentMethod;
 
-
+    // Only used by the MOCK gateway for test payments. Never stored, never logged.
+    // In production you would not send card data to your own server at all
+    // (Razorpay / Stripe tokenize it in the browser and you only receive a token).
     @ToString.Exclude
     private String cardNumber;
 

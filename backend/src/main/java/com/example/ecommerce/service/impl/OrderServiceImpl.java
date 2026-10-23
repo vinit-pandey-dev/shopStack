@@ -197,24 +197,6 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
     }
 
-    /** Customer-initiated cancel: only your own order, and only before it ships. Reuses the admin cancel logic. */
-    @Override
-    @Transactional
-    public OrderDto cancelOwnOrder(String username, Long orderId) {
-        User user = getUser(username);
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found: " + orderId));
-
-        if (!order.getUser().getId().equals(user.getId())) {
-            throw new BadRequestException("This order does not belong to you");
-        }
-        if (order.getStatus() != OrderStatus.PENDING && order.getStatus() != OrderStatus.CONFIRMED) {
-            throw new BadRequestException("Order #" + orderId + " is already " + order.getStatus().name().toLowerCase()
-                    + " and can no longer be cancelled online. Please contact support.");
-        }
-        return updateOrderStatus(orderId, OrderStatus.CANCELLED);
-    }
-
     private OrderDto toDto(Order order) {
         List<OrderItemDto> items = order.getItems().stream()
                 .map(oi -> new OrderItemDto(

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/** Admin-only (enforced in SecurityConfig: /api/admin/** requires ROLE_ADMIN). */
 @RestController
 @RequestMapping("/api/admin/orders")
 @RequiredArgsConstructor

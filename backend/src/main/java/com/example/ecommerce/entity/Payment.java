@@ -6,7 +6,10 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
+/**
+ * One payment record per order. Raw card numbers / UPI IDs are NEVER stored -
+ * only a masked label such as "Card ending in 4242".
+ */
 @Entity
 @Table(name = "payments")
 @Getter
