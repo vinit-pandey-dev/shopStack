@@ -14,7 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findTop4ByCategoryIdAndIdNotOrderByIdDesc(Long categoryId, Long id);
     List<Product> findTop4ByIdNotOrderByIdDesc(Long id);
 
-
+    // Used by the AI assistant (RAG). Fetch-joins the category so it can be read outside a web request.
     @Query("select p from Product p left join fetch p.category")
     List<Product> findAllWithCategory();
 

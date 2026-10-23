@@ -87,7 +87,6 @@ export const Api = {
   // payload: { shippingAddress, paymentMethod: 'CARD'|'UPI'|'COD', cardNumber?, upiId? }
   placeOrder: (payload) => request('/orders', { method: 'POST', body: payload }),
   getOrders: () => request('/orders'),
-  cancelOrder: (id) => request(`/orders/${id}/cancel`, { method: 'PUT' }),
 
   // AI assistant (RAG). history = earlier turns: [{ role: 'user'|'assistant', content }]
   chat: (message, history = []) => request('/ai/chat', { method: 'POST', body: { message, history } }),

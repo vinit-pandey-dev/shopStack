@@ -42,23 +42,9 @@ function Tracker({ status }) {
   );
 }
 
-const cancelOrder = async (order) => {
-  if (!window.confirm(`Cancel order #${order.id}? Any card or UPI payment will be refunded.`)) return;
-  setCancellingId(order.id);
-  try {
-    const updated = await Api.cancelOrder(order.id);
-    setOrders((list) => list.map((o) => (o.id === updated.id ? updated : o)));
-  } catch (e) {
-    window.alert(e.message);
-  } finally {
-    setCancellingId(null);
-  }
-}
-
 export default function Orders() {
   const [orders, setOrders] = useState(null);
   const [error, setError] = useState('');
-  const [cancellingId, setCancellingId] = useState(null);
 
   useEffect(() => {
     Api.getOrders().then(setOrders).catch((e) => setError(e.message));
@@ -96,17 +82,6 @@ export default function Orders() {
 
                 <div className="border-b border-line px-6 py-5">
                   <Tracker status={o.status} />
-{(o.status === 'PENDING' || o.status === 'CONFIRMED') && (
-  <button
-    type="button"
-    onClick={() => cancelOrder(o)}
-    disabled={cancellingId === o.id}
-    className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-danger/40 px-3.5 py-2 text-sm font-medium text-danger transition hover:bg-red-50 disabled:opacity-60"
-  >
-    {cancellingId === o.id ? <Loader2 size={14} className="animate-spin" /> : <XCircle size={14} />}
-    Cancel order
-  </button>
-)}
                 </div>
 
                 <ul className="divide-y divide-line/70 px-6 py-2">

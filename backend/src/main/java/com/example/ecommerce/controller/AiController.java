@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/** Requires a logged-in user (SecurityConfig: anyRequest().authenticated()) so anonymous traffic can't burn API credit. */
 @RestController
 @RequestMapping("/api/ai")
 @RequiredArgsConstructor

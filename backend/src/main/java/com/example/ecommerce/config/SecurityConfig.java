@@ -66,7 +66,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
-              
+                // Return clean JSON 401 / 403 (the frontend logs the user out on 401)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, e) -> {
                             response.setStatus(401);

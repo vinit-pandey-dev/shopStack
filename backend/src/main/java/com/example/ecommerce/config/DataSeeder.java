@@ -4,9 +4,9 @@ import com.example.ecommerce.entity.*;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +20,9 @@ public class DataSeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private final PasswordEncoder passwordEncoder;
     @Value("${app.admin.password:admin123}")
     private String adminPassword;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
